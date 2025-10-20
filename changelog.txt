@@ -8,7 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+<<<<<<< HEAD
 - N/A
+=======
+- Initial project setup
+- GitHub repository created (ounass-api)
+- Project structure with src, data, and tests directories
+- README.md with comprehensive documentation
+- .gitignore for Python projects
+- requirements.txt with necessary dependencies
+- Sample data CSV structure
+- Google Sheets service integration
+- Machine learning forecasting model
+- FastAPI endpoints for pod predictions
+- Docker configuration
+- Environment variable templates
+>>>>>>> origin/main
 
 ### Changed
 - N/A
@@ -21,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2025-10-20
 
 ### Added
+<<<<<<< HEAD
 - Initial project setup and GitHub repository creation (https://github.com/sorted78/ounass-api)
 - Complete project structure with src/, data/, tests/ directories
 - Google Sheets service integration (src/services/sheets_service.py)
@@ -87,3 +103,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Kubernetes manifests included in documentation
   * Health checks for container orchestration
   * Structured logging for monitoring
+=======
+- Initial commit
+- Repository created on GitHub
+- Base project structure established
+>>>>>>> origin/main

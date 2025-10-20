@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # OUNASS Kubernetes Pod Forecasting API
 
 ## Overview
@@ -138,3 +139,7 @@ The Google Sheet should have the following columns:
 
 ## License
 MIT License
+=======
+# ounass-api
+Kubernetes pod forecasting API for OUNASS based on GMV, users, and marketing spend
+>>>>>>> origin/main
