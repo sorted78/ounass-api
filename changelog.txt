@@ -1,0 +1,89 @@
+# Changelog
+
+All notable changes to the OUNASS Kubernetes Pod Forecasting API will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+- N/A
+
+### Changed
+- N/A
+
+### Fixed
+- N/A
+
+---
+
+## [0.1.0] - 2025-10-20
+
+### Added
+- Initial project setup and GitHub repository creation (https://github.com/sorted78/ounass-api)
+- Complete project structure with src/, data/, tests/ directories
+- Google Sheets service integration (src/services/sheets_service.py)
+  * Automatic data fetching from Google Sheets
+  * Separate handling of historical and budget data
+  * Data validation and type conversion
+- Machine learning forecasting model (src/models/forecasting.py)
+  * Gradient Boosting Regressor for frontend and backend pod predictions
+  * Advanced feature engineering (time-based, interaction features, rolling averages)
+  * Model training, evaluation, and persistence
+  * Confidence scoring for predictions
+- FastAPI REST endpoints (src/api/endpoints.py)
+  * Health check endpoint
+  * Model training endpoint
+  * Daily forecast endpoint with optional date parameter
+  * Date range forecast endpoint with flexible parameters
+  * Model metrics endpoint
+- Main FastAPI application (src/main.py)
+  * Async lifespan management
+  * CORS middleware configuration
+  * Structured logging with loguru
+  * Environment-based configuration with pydantic-settings
+- Sample data CSV with 6 months historical + 6 months budget data
+- Comprehensive test suite (tests/test_api.py)
+  * API endpoint tests
+  * Model training and prediction tests
+  * Feature engineering tests
+- Docker configuration
+  * Optimized Dockerfile with multi-stage build considerations
+  * Health check integration
+  * Volume mounting for credentials and logs
+- Environment configuration
+  * .env.example template with all required variables
+  * Support for development and production configurations
+- Complete documentation suite
+  * README.md - Project overview and quick start
+  * API_USAGE.md - Complete API documentation with curl examples and Python client
+  * GOOGLE_SHEETS_SETUP.md - Step-by-step Google Cloud and Sheets setup
+  * DEPLOYMENT.md - Docker, Kubernetes, and cloud deployment guides
+  * QUICKSTART.md - Quick reference for getting started
+- Git configuration
+  * Comprehensive .gitignore for Python projects
+  * Protection for credentials and sensitive files
+- Python dependencies
+  * FastAPI and Uvicorn for API framework
+  * Google Sheets API integration libraries
+  * scikit-learn for machine learning
+  * pandas and numpy for data processing
+  * Testing and development tools
+
+### Technical Highlights
+- ML Model Features:
+  * Separate models for frontend and backend pods
+  * Feature engineering includes day of week, month, GMV per user, ROAS, rolling averages
+  * Model evaluation with MAE, RMSE, and R² metrics
+  * Automatic rounding and minimum pod constraints
+- API Features:
+  * Automatic OpenAPI/Swagger documentation at /docs
+  * Pydantic models for request/response validation
+  * Comprehensive error handling
+  * Range queries support multiple parameter combinations
+- DevOps Features:
+  * Docker-ready with optimized image
+  * Kubernetes manifests included in documentation
+  * Health checks for container orchestration
+  * Structured logging for monitoring
