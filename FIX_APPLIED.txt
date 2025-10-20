@@ -1,0 +1,48 @@
+═══════════════════════════════════════════════════════════════════════════════
+FIXED: Feature Mismatch Issue
+═══════════════════════════════════════════════════════════════════════════════
+
+The issue was that the model created different features during training vs prediction.
+This has been fixed!
+
+Now follow these steps:
+
+STEP 1: Restart the API
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Press CTRL+C to stop the current API, then run:
+
+  ./run.sh
+
+
+STEP 2: Retrain the Model with Fixed Code
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  curl -X POST http://127.0.0.1:8000/api/v1/train
+
+You should see:
+{
+  "frontend_mae": 0.xx,
+  "frontend_rmse": 0.xx,
+  "frontend_r2": 0.xx,
+  ...
+}
+
+
+STEP 3: Test Predictions
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Get a single day prediction:
+  curl "http://127.0.0.1:8000/api/v1/forecast/daily?target_date=2024-06-01"
+
+Get a 7-day range:
+  curl "http://127.0.0.1:8000/api/v1/forecast/range?start_date=2024-06-01&days=7"
+
+
+WHAT WAS FIXED?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The model now:
+✅ Stores exactly which features it used during training
+✅ Uses those exact same features during prediction
+✅ No longer tries to create rolling averages during single-row predictions
+✅ Consistent feature set = no more "expecting 12 features" errors
+
+═══════════════════════════════════════════════════════════════════════════════

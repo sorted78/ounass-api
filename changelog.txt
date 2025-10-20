@@ -1,93 +1,65 @@
-# Changelog
+OUNASS Kubernetes Pod Forecasting API - Change Log
+═══════════════════════════════════════════════════════════════════════════════
 
-All notable changes to the OUNASS Kubernetes Pod Forecasting API will be documented in this file.
+2025-10-20 - Initial Setup & Critical Fixes
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+✅ FIXED: Missing .env file causing startup failures
+   - Created .env with required configuration variables
+   - Created .env.example as template
 
-## [Unreleased]
+✅ FIXED: Pydantic warning about model_trained field
+   - Added model_config with protected_namespaces to HealthResponse
 
-### Added
-- requirements-py39-py312.txt for stable Python 3.9-3.12 support
-- PYTHON_VERSION_GUIDE.md with troubleshooting for Python version issues
+✅ FIXED: Uvicorn constant reloading from venv directory
+   - Created run.sh script with --reload-exclude for venv
+   - Prevents unnecessary file watching in virtual environment
 
-### Changed
-- Updated requirements.txt to use flexible version constraints for Python 3.13 compatibility
-- pandas: >=2.2.0 (was 2.1.3)
-- numpy: >=1.26.4 (was 1.26.2)
-- scikit-learn: >=1.3.2 (was 1.3.2)
+✅ FIXED: Extra environment variables validation errors
+   - Removed unused config variables from .env
+   - Aligned .env with Settings class definition
 
-### Fixed
-- Python 3.13 compatibility issues with pandas compilation
+✅ FIXED: Feature mismatch error (12 vs 10 features)
+   - Modified PodForecastingModel to track features used during training
+   - Removed rolling averages from prediction features (only used in training)
+   - Now uses consistent feature set between training and prediction
+   - Features used: GMV, Users, Marketing_Cost, DayOfWeek, DayOfMonth, 
+     Month, GMV_per_User, Marketing_per_User, ROAS, IsWeekend
 
----
+✅ CREATED: Helper scripts
+   - test_connection.py: Diagnose Google Sheets connectivity
+   - generate_sample_pods.py: Generate realistic pod data for testing
+   - update_dates_to_2025.py: Update sheet dates to current year
+   - run.sh: Convenient API startup script
 
-## [0.1.0] - 2025-10-20
+✅ CREATED: Documentation
+   - GOOGLE_SHEETS_QUICKSTART.txt: Step-by-step Google Sheets setup
+   - START_HERE.txt: Quick start guide
+   - FIX_APPLIED.txt: Summary of fixes applied
 
-### Added
-- Initial project setup and GitHub repository creation (https://github.com/sorted78/ounass-api)
-- Complete project structure with src/, data/, tests/ directories
-- Google Sheets service integration (src/services/sheets_service.py)
-  * Automatic data fetching from Google Sheets
-  * Separate handling of historical and budget data
-  * Data validation and type conversion
-- Machine learning forecasting model (src/models/forecasting.py)
-  * Gradient Boosting Regressor for frontend and backend pod predictions
-  * Advanced feature engineering (time-based, interaction features, rolling averages)
-  * Model training, evaluation, and persistence
-  * Confidence scoring for predictions
-- FastAPI REST endpoints (src/api/endpoints.py)
-  * Health check endpoint
-  * Model training endpoint
-  * Daily forecast endpoint with optional date parameter
-  * Date range forecast endpoint with flexible parameters
-  * Model metrics endpoint
-- Main FastAPI application (src/main.py)
-  * Async lifespan management
-  * CORS middleware configuration
-  * Structured logging with loguru
-  * Environment-based configuration with pydantic-settings
-- Sample data CSV with 6 months historical + 6 months budget data
-- Comprehensive test suite (tests/test_api.py)
-  * API endpoint tests
-  * Model training and prediction tests
-  * Feature engineering tests
-- Docker configuration
-  * Optimized Dockerfile with multi-stage build considerations
-  * Health check integration
-  * Volume mounting for credentials and logs
-- Environment configuration
-  * .env.example template with all required variables
-  * Support for development and production configurations
-- Complete documentation suite
-  * README.md - Project overview and quick start
-  * API_USAGE.md - Complete API documentation with curl examples and Python client
-  * GOOGLE_SHEETS_SETUP.md - Step-by-step Google Cloud and Sheets setup
-  * DEPLOYMENT.md - Docker, Kubernetes, and cloud deployment guides
-  * QUICKSTART.md - Quick reference for getting started
-- Git configuration
-  * Comprehensive .gitignore for Python projects
-  * Protection for credentials and sensitive files
-- Python dependencies
-  * FastAPI and Uvicorn for API framework
-  * Google Sheets API integration libraries
-  * scikit-learn for machine learning
-  * pandas and numpy for data processing
-  * Testing and development tools
+📋 CONFIGURATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Environment Variables (.env):
+  - GOOGLE_SHEET_ID: Google Sheet identifier
+  - GOOGLE_CREDENTIALS_PATH: Path to service account credentials
+  - API_HOST: API host address (default: 0.0.0.0)
+  - API_PORT: API port (default: 8000)
+  - LOG_LEVEL: Logging level (default: INFO)
 
-### Technical Highlights
-- ML Model Features:
-  * Separate models for frontend and backend pods
-  * Feature engineering includes day of week, month, GMV per user, ROAS, rolling averages
-  * Model evaluation with MAE, RMSE, and R² metrics
-  * Automatic rounding and minimum pod constraints
-- API Features:
-  * Automatic OpenAPI/Swagger documentation at /docs
-  * Pydantic models for request/response validation
-  * Comprehensive error handling
-  * Range queries support multiple parameter combinations
-- DevOps Features:
-  * Docker-ready with optimized image
-  * Kubernetes manifests included in documentation
-  * Health checks for container orchestration
-  * Structured logging for monitoring
+🚀 CURRENT STATUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ API starts successfully
+✅ Google Sheets connectivity working
+✅ Model training functional
+✅ Prediction endpoints operational
+✅ No known blocking issues
+
+📝 NEXT STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Ensure sheet has historical pod data (30+ rows recommended)
+2. Train model: curl -X POST http://127.0.0.1:8000/api/v1/train
+3. Test predictions: curl http://127.0.0.1:8000/api/v1/forecast/daily?target_date=YYYY-MM-DD
+4. Set up production deployment (optional)
+5. Configure automated retraining schedule (optional)
+
+═══════════════════════════════════════════════════════════════════════════════

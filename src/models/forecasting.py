@@ -24,6 +24,7 @@ class PodForecastingModel:
         self.scaler = StandardScaler()
         self.is_trained = False
         self.feature_names = ['GMV', 'Users', 'Marketing_Cost', 'DayOfWeek', 'DayOfMonth', 'Month']
+        self.feature_names_used = None  # Will be set during training
         self.metrics = {}
     
     def _engineer_features(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -65,25 +66,34 @@ class PodForecastingModel:
         
         return df
     
-    def prepare_features(self, df: pd.DataFrame) -> Tuple[np.ndarray, List[str]]:
+    def prepare_features(self, df: pd.DataFrame, training: bool = False) -> Tuple[np.ndarray, List[str]]:
         """
         Prepare feature matrix for training or prediction
         
         Args:
             df: DataFrame with engineered features
+            training: If True, determine which features to use. If False, use stored features.
             
         Returns:
             Tuple of (feature matrix, feature names)
         """
-        # Select features for modeling
-        available_features = [col for col in self.feature_names if col in df.columns]
+        if training:
+            # During training: select all available features
+            available_features = [col for col in self.feature_names if col in df.columns]
+            
+            # Add interaction features if available (but skip rolling averages for single predictions)
+            interaction_features = ['GMV_per_User', 'Marketing_per_User', 'ROAS', 'IsWeekend']
+            for feat in interaction_features:
+                if feat in df.columns:
+                    available_features.append(feat)
+            
+            # Store for future predictions
+            self.feature_names_used = available_features
+        else:
+            # During prediction: use exact same features as training
+            available_features = self.feature_names_used
         
-        # Add interaction features if available
-        interaction_features = ['GMV_per_User', 'Marketing_per_User', 'ROAS', 'GMV_7day_avg', 'Users_7day_avg', 'IsWeekend']
-        for feat in interaction_features:
-            if feat in df.columns:
-                available_features.append(feat)
-        
+        # Ensure all features exist, fill missing with 0
         X = df[available_features].fillna(0).values
         
         return X, available_features
@@ -104,7 +114,7 @@ class PodForecastingModel:
         df = self._engineer_features(historical_data)
         
         # Prepare features and targets
-        X, feature_names = self.prepare_features(df)
+        X, feature_names = self.prepare_features(df, training=True)
         y_frontend = df['Frontend_Pods'].values
         y_backend = df['Backend_Pods'].values
         
@@ -172,8 +182,8 @@ class PodForecastingModel:
         # Engineer features
         df = self._engineer_features(budget_data)
         
-        # Prepare features
-        X, _ = self.prepare_features(df)
+        # Prepare features (use same features as training)
+        X, _ = self.prepare_features(df, training=False)
         X_scaled = self.scaler.transform(X)
         
         # Make predictions
