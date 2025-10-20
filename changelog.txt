@@ -8,35 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-<<<<<<< HEAD
-- N/A
-=======
-- Initial project setup
-- GitHub repository created (ounass-api)
-- Project structure with src, data, and tests directories
-- README.md with comprehensive documentation
-- .gitignore for Python projects
-- requirements.txt with necessary dependencies
-- Sample data CSV structure
-- Google Sheets service integration
-- Machine learning forecasting model
-- FastAPI endpoints for pod predictions
-- Docker configuration
-- Environment variable templates
->>>>>>> origin/main
+- requirements-py39-py312.txt for stable Python 3.9-3.12 support
+- PYTHON_VERSION_GUIDE.md with troubleshooting for Python version issues
 
 ### Changed
-- N/A
+- Updated requirements.txt to use flexible version constraints for Python 3.13 compatibility
+- pandas: >=2.2.0 (was 2.1.3)
+- numpy: >=1.26.4 (was 1.26.2)
+- scikit-learn: >=1.3.2 (was 1.3.2)
 
 ### Fixed
-- N/A
+- Python 3.13 compatibility issues with pandas compilation
 
 ---
 
 ## [0.1.0] - 2025-10-20
 
 ### Added
-<<<<<<< HEAD
 - Initial project setup and GitHub repository creation (https://github.com/sorted78/ounass-api)
 - Complete project structure with src/, data/, tests/ directories
 - Google Sheets service integration (src/services/sheets_service.py)
@@ -103,8 +91,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Kubernetes manifests included in documentation
   * Health checks for container orchestration
   * Structured logging for monitoring
-=======
-- Initial commit
-- Repository created on GitHub
-- Base project structure established
->>>>>>> origin/main

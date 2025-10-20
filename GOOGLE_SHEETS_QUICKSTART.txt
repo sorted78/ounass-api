@@ -1,0 +1,254 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                   GOOGLE SHEETS SETUP - QUICK GUIDE                           ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+Follow these steps to connect your existing Google Sheet to the API.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 1: Create Google Cloud Project (5 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to: https://console.cloud.google.com/
+
+2. Click "Select a project" → "NEW PROJECT"
+
+3. Project name: "OUNASS Pod Forecasting"
+
+4. Click "CREATE"
+
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 2: Enable Google Sheets API (2 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. In Google Cloud Console, go to: "APIs & Services" → "Library"
+
+2. Search for: "Google Sheets API"
+
+3. Click on it → Click "ENABLE"
+
+4. Also search for: "Google Drive API" → Click "ENABLE"
+
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 3: Create Service Account (3 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to: "APIs & Services" → "Credentials"
+
+2. Click: "CREATE CREDENTIALS" → "Service account"
+
+3. Fill in:
+   Service account name: ounass-pod-forecasting
+   Service account ID: (auto-generated)
+   Description: Service account for OUNASS API
+
+4. Click "CREATE AND CONTINUE"
+
+5. Skip optional steps → Click "DONE"
+
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 4: Download Credentials (2 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. In "Credentials" page, find your service account
+
+2. Click on the service account email
+
+3. Go to "KEYS" tab
+
+4. Click "ADD KEY" → "Create new key"
+
+5. Choose "JSON" format
+
+6. Click "CREATE"
+
+7. File downloads automatically (looks like: project-name-xxxxx.json)
+
+8. IMPORTANT: Rename it to "credentials.json"
+
+9. Move it to: /Users/root1/Desktop/Projects/ounass-api/
+
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 5: Get Your Sheet ID (1 minute)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open your Google Sheet in browser
+
+2. Look at the URL:
+   https://docs.google.com/spreadsheets/d/SHEET_ID_HERE/edit
+
+3. Copy the SHEET_ID_HERE part (between /d/ and /edit)
+
+   Example:
+   URL: https://docs.google.com/spreadsheets/d/1Abc-Xyz123_456/edit
+   Sheet ID: 1Abc-Xyz123_456
+
+4. Save this ID - you'll need it in Step 7
+
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 6: Share Sheet with Service Account (2 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open your credentials.json file
+
+2. Find the "client_email" field - it looks like:
+   "ounass-pod-forecasting@project-name.iam.gserviceaccount.com"
+
+3. Copy this email address
+
+4. Open your Google Sheet
+
+5. Click "Share" button (top right)
+
+6. Paste the service account email
+
+7. Set permission to: "Viewer" (API only needs to read)
+
+8. UNCHECK "Notify people"
+
+9. Click "Share"
+
+✅ Your sheet is now accessible by the API!
+
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 7: Update .env File (1 minute)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open: /Users/root1/Desktop/Projects/ounass-api/.env
+
+2. Replace this line:
+   GOOGLE_SHEET_ID=temporary_placeholder_sheet_id
+
+   With your actual Sheet ID:
+   GOOGLE_SHEET_ID=1Abc-Xyz123_456
+
+3. Save the file
+
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 8: Verify Your Sheet Format (1 minute)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Your Google Sheet should have these column headers in Row 1:
+
+┌──────┬──────────┬───────┬────────────────┬───────────────┬──────────────┐
+│ Date │   GMV    │ Users │ Marketing_Cost │ Frontend_Pods │ Backend_Pods │
+└──────┴──────────┴───────┴────────────────┴───────────────┴──────────────┘
+
+IMPORTANT:
+- Header names must match exactly (case-sensitive!)
+- Date format: YYYY-MM-DD (e.g., 2024-01-15)
+- Numbers only in numeric columns (no $ signs or commas)
+- Frontend_Pods and Backend_Pods: Fill for historical data (Jan-Jun)
+- Frontend_Pods and Backend_Pods: Leave empty for future/budget data (Jul+)
+
+Example data:
+2024-01-01,1200000,18000,45000,10,6
+2024-01-02,1150000,17500,42000,9,6
+...
+2024-06-30,1690000,25400,62000,15,10
+2024-07-01,1900000,28500,67500,,     ← No pod data for future dates
+2024-07-02,1950000,29200,69000,,
+
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 9: Restart the API (1 minute)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Stop the API (Press CTRL+C)
+
+2. Start it again:
+   ./run.sh
+
+3. You should see:
+   ✅ "Successfully connected to Google Sheets API"
+   ✅ "API startup complete!"
+
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 10: Test the Connection (2 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Test 1: Train the Model
+━━━━━━━━━━━━━━━━━━━━
+curl -X POST http://127.0.0.1:8000/api/v1/train
+
+Expected response:
+{
+  "frontend_mae": 0.82,
+  "frontend_rmse": 1.05,
+  "frontend_r2": 0.94,
+  ...
+}
+
+Test 2: Get Tomorrow's Forecast
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+curl http://127.0.0.1:8000/api/v1/forecast/daily
+
+Expected response:
+{
+  "date": "2025-10-21",
+  "frontend_pods": 18,
+  "backend_pods": 12,
+  "total_pods": 30,
+  "confidence_score": 0.92,
+  ...
+}
+
+Test 3: Get Next 7 Days
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+curl "http://127.0.0.1:8000/api/v1/forecast/range?days=7"
+
+═══════════════════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Error: "Failed to connect to Google Sheets"
+→ Make sure both Google Sheets API AND Google Drive API are enabled
+
+Error: "Permission denied"
+→ Make sure you shared the sheet with the service account email
+
+Error: "Invalid credentials"
+→ Make sure credentials.json is in the project root directory
+
+Error: "Insufficient historical data"
+→ You need at least 10 rows of historical data with pod counts
+
+Error: "No budget data found for date"
+→ Make sure your sheet has data for the date you're requesting
+
+═══════════════════════════════════════════════════════════════════════════════
+
+NEED SAMPLE DATA?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If you need sample data, you can import:
+/Users/root1/Desktop/Projects/ounass-api/data/sample_data.csv
+
+In Google Sheets:
+1. File → Import
+2. Upload sample_data.csv
+3. Choose "Replace current sheet"
+4. Import
+
+This gives you 6 months historical + 6 months budget data for testing!
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎉 ONCE COMPLETE, YOUR API WILL BE FULLY FUNCTIONAL!
+
+You'll be able to:
+✅ Train models on historical data
+✅ Get daily pod predictions
+✅ Get range forecasts for capacity planning
+✅ Monitor model performance metrics
+
+═══════════════════════════════════════════════════════════════════════════════

@@ -33,6 +33,8 @@ class PredictionRange(BaseModel):
 
 class HealthResponse(BaseModel):
     """Health check response"""
+    model_config = {"protected_namespaces": ()}
+    
     status: str
     model_trained: bool
     timestamp: datetime
